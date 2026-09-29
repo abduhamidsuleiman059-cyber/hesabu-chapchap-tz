@@ -1,0 +1,11 @@
+{
+  "note": "PAYE ya kila mwezi, wakazi wa Tanzania Bara. Thibitisha na tra.go.tz kabla ya kubadilisha.",
+  "nssfRate": 0.10,
+  "bands": [
+    { "from": 0,       "base": 0,      "rate": 0 },
+    { "from": 270000,  "base": 0,      "rate": 0.08 },
+    { "from": 520000,  "base": 20000,  "rate": 0.20 },
+    { "from": 760000,  "base": 68000,  "rate": 0.25 },
+    { "from": 1000000, "base": 128000, "rate": 0.30 }
+  ]
+}

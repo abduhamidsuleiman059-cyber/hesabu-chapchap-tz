@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mawasiliano - Hesabu Chapchap TZ</title>
+  <meta name="description" content="Wasiliana na Hesabu Chapchap TZ: tuma maoni, ripoti kiwango kilichobadilika au uliza swali kuhusu vikokotoo vyetu.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/premium.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="logo">Hesabu Chapchap <span>TZ</span></a>
+      <button class="menu-btn" id="menuBtn" aria-label="Fungua menyu" aria-expanded="false"><i></i><i></i><i></i></button>
+      <nav class="menu" id="menu">
+        <a href="index.html#tra">TRA</a>
+        <a href="index.html#luku">LUKU</a>
+        <a href="index.html#mikopo">Mikopo</a>
+        <a href="about.html">Kuhusu</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <article class="page">
+      <h1>Wasiliana Nasi</h1>
+      <p>Una swali, maoni, au umeona kiwango cha kodi au bei ya umeme kilichobadilika? Tuandikie hapa chini. Tunasoma kila ujumbe na tunajibu haraka iwezekanavyo.</p>
+
+      <form name="mawasiliano" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="mawasiliano">
+        <p class="hp"><label>Usijaze hapa: <input name="bot-field"></label></p>
+
+        <label for="jina">Jina lako</label>
+        <input id="jina" name="jina" type="text" autocomplete="name" required placeholder="e.g. Amina Juma">
+
+        <label for="barua">Barua pepe</label>
+        <input id="barua" name="barua" type="email" autocomplete="email" required placeholder="e.g. jina@mfano.com">
+
+        <label for="mada">Mada</label>
+        <select id="mada" name="mada">
+          <option>Swali au maoni</option>
+          <option>Kiwango cha kodi kimebadilika</option>
+          <option>Bei ya umeme imebadilika</option>
+          <option>Hitilafu kwenye kikokotoo</option>
+          <option>Nyingine</option>
+        </select>
+
+        <label for="ujumbe">Ujumbe wako</label>
+        <textarea id="ujumbe" name="ujumbe" required placeholder="Andika ujumbe wako hapa..."></textarea>
+
+        <button class="btn" type="submit">Tuma Ujumbe</button>
+      </form>
+
+      <div class="box">
+        <p>Ukiripoti hitilafu ya hesabu, tuambie kiasi ulichoingiza na jibu ulilopata. Hilo hutusaidia kurekebisha haraka.</p>
+      </div>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; <span id="year">2025</span> Hesabu Chapchap TZ &middot; Inasaidia wananchi kukokotoa kifedha haraka &middot; Data yako ni salama na siri</p>
+    <p class="flinks"><a href="privacy-policy.html">Privacy Policy</a> <a href="about.html">Kuhusu</a> <a href="contact.html">Mawasiliano</a></p>
+  </footer>
+  <script src="js/main.js" defer></script>
+</body>
+</html>
