@@ -1,28 +1,38 @@
-(function () {
-  const DEF = { tier1Limit: 75, tier1Price: 100, tier2Price: 350, vat: 0.18, ewura: 0.01, rea: 0.03 };
-  const btn = document.getElementById('lukuBtn');
-  if (!btn) return;
-  btn.addEventListener('click', async function () {
-    const out = document.getElementById('lukuOut');
-    const amount = HC.num(document.getElementById('lukuAmount').value);
-    const used = HC.num(document.getElementById('lukuUsed').value);
-    if (amount <= 0) { out.innerHTML = '<p class="err">Weka kiasi sahihi cha kununua.</p>'; return; }
-    const R = await HC.load('data/tanesco-rates.json', DEF);
-    const levy = R.vat + R.ewura + R.rea;
-    const energy = amount / (1 + levy);
-    const left1 = Math.max(0, R.tier1Limit - used);
-    const cost1 = left1 * R.tier1Price;
-    const units = energy <= cost1
-      ? energy / R.tier1Price
-      : left1 + (energy - cost1) / R.tier2Price;
-    out.innerHTML = HC.rows([
-      ['Kiasi ulicholipa', HC.fmt(amount) + ' TZS'],
-      ['VAT (' + (R.vat * 100) + '%)', HC.fmt2(energy * R.vat) + ' TZS'],
-      ['EWURA (' + (R.ewura * 100) + '%)', HC.fmt2(energy * R.ewura) + ' TZS'],
-      ['REA (' + (R.rea * 100) + '%)', HC.fmt2(energy * R.rea) + ' TZS'],
-      ['Pesa ya umeme (bila kodi)', HC.fmt2(energy) + ' TZS'],
-      ['Wastani wa bei kwa unit', HC.fmt2(amount / units) + ' TZS'],
-      ['Units utakazopata', HC.fmt2(units) + ' kWh', 'big']
-    ]) + '<p class="note">Makadirio ya TANESCO D1: unit ' + R.tier1Price + ' TZS kwa units ' + R.tier1Limit + ' za kwanza za mwezi, kisha ' + R.tier2Price + ' TZS. Bei rasmi huwekwa na EWURA - angalia <a href="https://www.tanesco.co.tz" target="_blank" rel="noopener"><u>tanesco.co.tz</u></a>.</p>';
-  });
-})();
+document.getElementById('lukuBtn').addEventListener('click', function () {
+  const rawAmount = document.getElementById('lukuAmount').value.replace(/[^0-9.]/g, '');
+  const pesa = Number(rawAmount);
+  const aina = document.getElementById('aina-mteja').value;
+
+  if (!pesa) {
+    document.getElementById('lukuOut').innerHTML = '<p style="color:red">Weka kiasi cha pesa kwanza.</p>';
+    return;
+  }
+
+  let units = 0;
+  let maelezoBei = '';
+
+  if (aina === 'D1') {
+    // Bei rasmi ya TANESCO D1: 100 TZS/unit kwa units 75 za kwanza, 350 TZS/unit baada ya hapo
+    if (pesa <= 7500) {
+      units = pesa / 100;
+    } else {
+      units = 75 + (pesa - 7500) / 350;
+    }
+    maelezoBei = '100 TZS/unit (units 75 za kwanza), kisha 350 TZS/unit';
+  } else {
+    // T1: formula imekokotolewa kutoka takwimu halisi za mtumiaji (10k=19u, 20k=46u, 50k=122u)
+    const gharamaZaHuduma = 2366;
+    const beiKwaUnit = 390;
+    let baadaYaGharama = pesa - gharamaZaHuduma;
+    if (baadaYaGharama < 0) baadaYaGharama = 0;
+    units = baadaYaGharama / beiKwaUnit;
+    maelezoBei = `Wastani ${beiKwaUnit} TZS/unit (inajumuisha gharama za huduma na VAT/EWURA/REA)`;
+  }
+
+  document.getElementById('lukuOut').innerHTML = `
+    <p>Aina: <b>${aina}</b></p>
+    <p>Pesa: ${pesa.toLocaleString()} TZS</p>
+    <p style="font-size:12px;color:gray">${maelezoBei}</p>
+    <p><b>Units: <span style="color:#2a9d8f;font-size:22px">${units.toFixed(1)} kWh</span></b></p>
+  `;
+});

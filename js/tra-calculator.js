@@ -1,41 +1,43 @@
-(function () {
-  const DEF = {
-    nssfRate: 0.10,
-    bands: [
-      { from: 0, base: 0, rate: 0 },
-      { from: 270000, base: 0, rate: 0.08 },
-      { from: 520000, base: 20000, rate: 0.20 },
-      { from: 760000, base: 68000, rate: 0.25 },
-      { from: 1000000, base: 128000, rate: 0.30 }
-    ]
-  };
-  const btn = document.getElementById('traBtn');
-  if (!btn) return;
-  btn.addEventListener('click', async function () {
-    const out = document.getElementById('traOut');
-    const gross = HC.num(document.getElementById('traSalary').value);
-    const other = HC.num(document.getElementById('traOther').value);
-    if (gross <= 0) { out.innerHTML = '<p class="err">Weka mshahara sahihi wa mwezi.</p>'; return; }
-    const R = await HC.load('data/tra-rates.json', DEF);
-    const nssf = gross * R.nssfRate;
-    const taxable = Math.max(0, gross - nssf - other);
-    let band = R.bands[0];
-    R.bands.forEach(function (b) { if (taxable > b.from) band = b; });
-    const paye = band.base + (taxable - band.from) * band.rate;
-    const net = gross - paye - nssf;
-    const list = [
-      ['Mshahara (Gross)', HC.fmt(gross) + ' TZS'],
-      ['NSSF (' + (R.nssfRate * 100) + '%)', '- ' + HC.fmt(nssf) + ' TZS']
-    ];
-    if (other > 0) list.push(['Punguzo lingine', '- ' + HC.fmt(other) + ' TZS']);
-    list.push(
-      ['Mshahara unaotozwa kodi', HC.fmt(taxable) + ' TZS'],
-      ['Kiwango cha kodi (kipande chako)', (band.rate * 100) + '%'],
-      ['PAYE', '- ' + HC.fmt(paye) + ' TZS'],
-      ['Wastani wa kodi kwa gross', HC.fmt2(paye / gross * 100) + '%'],
-      ['Take Home (Mkononi)', HC.fmt(net) + ' TZS', 'big']
-    );
-    out.innerHTML = HC.rows(list) +
-      '<p class="note">Take home = Gross - PAYE - NSSF. PAYE hukokotolewa baada ya kutoa NSSF. Makadirio kwa wakazi wa Tanzania Bara; thibitisha na <a href="https://www.tra.go.tz" target="_blank" rel="noopener"><u>tra.go.tz</u></a>.</p>';
-  });
-})();
+document.getElementById('traBtn').addEventListener('click', function () {
+  const rawSalary = document.getElementById('traSalary').value.replace(/[^0-9.]/g, '');
+  const rawOther = document.getElementById('traOther').value.replace(/[^0-9.]/g, '');
+
+  const salaryInput = Number(rawSalary);
+  const otherDeduction = Number(rawOther) || 0;
+
+  if (!salaryInput) {
+    document.getElementById('traOut').innerHTML = '<p style="color:red">Weka mshahara kwanza.</p>';
+    return;
+  }
+
+  const taxable = Math.max(salaryInput - otherDeduction, 0);
+
+  let paye = 0;
+  if (taxable <= 270000) {
+    paye = 0;
+  } else if (taxable <= 520000) {
+    paye = (taxable - 270000) * 0.09;
+  } else if (taxable <= 760000) {
+    paye = 22500 + (taxable - 520000) * 0.20;
+  } else if (taxable <= 1000000) {
+    paye = 70500 + (taxable - 760000) * 0.25;
+  } else {
+    paye = 130500 + (taxable - 1000000) * 0.30;
+  }
+
+  const nssf = salaryInput * 0.10;
+  const takeHome = salaryInput - paye - nssf;
+  const beforeNssf = salaryInput - paye;
+
+  document.getElementById('traOut').innerHTML = `
+    <p><b>Mshahara:</b> ${salaryInput.toLocaleString()} TZS</p>
+    ${otherDeduction > 0 ? `<p><b>Punguzo lingine:</b> ${otherDeduction.toLocaleString()} TZS</p>` : ''}
+    <p><b>PAYE (TRA):</b> <span style="color:#e63946">${paye.toLocaleString(undefined,{maximumFractionDigits:0})} TZS</span></p>
+    <p><b>NSSF 10%:</b> ${nssf.toLocaleString(undefined,{maximumFractionDigits:0})} TZS</p>
+    <hr>
+    <p><b>Utabaki nayo (baada ya PAYE + NSSF):</b><br>
+      <span style="color:#2a9d8f;font-size:20px;font-weight:bold">${takeHome.toLocaleString(undefined,{maximumFractionDigits:0})} TZS</span>
+    </p>
+    <p style="font-size:12px;color:gray">Kabla ya NSSF: ${beforeNssf.toLocaleString(undefined,{maximumFractionDigits:0})} TZS</p>
+  `;
+});
