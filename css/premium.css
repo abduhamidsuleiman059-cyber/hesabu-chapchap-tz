@@ -27,3 +27,181 @@ input::placeholder{font-weight:400;color:#9ca3af}
   .tabbar a.on{background:#e7f7ed;color:#0b6b34}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+.wa-float {
+  position: fixed;
+  bottom: 90px;
+  right: 18px;
+  width: 58px;
+  height: 58px;
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+  z-index: 999;
+  overflow: hidden;
+  animation: wa-bounce 2.8s ease-in-out infinite, wa-pulse 2.2s infinite;
+  transition: transform 0.2s ease;
+}
+
+.wa-float:hover {
+  transform: scale(1.12);
+}
+
+.wa-float svg {
+  position: relative;
+  z-index: 2;
+}
+
+/* Mng'ao unaopita juu ya icon */
+.wa-float::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.5), transparent);
+  transform: skewX(-20deg);
+  animation: wa-shine 3.5s ease-in-out infinite;
+}
+
+@keyframes wa-shine {
+  0%   { left: -75%; }
+  30%  { left: 130%; }
+  100% { left: 130%; }
+}
+
+/* Kuruka/bounce taratibu */
+@keyframes wa-bounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+/* Ring inayopanuka (pulse) */
+@keyframes wa-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(37,211,102,0.55), 0 4px 14px rgba(0,0,0,0.35); }
+  70%  { box-shadow: 0 0 0 18px rgba(37,211,102,0), 0 4px 14px rgba(0,0,0,0.35); }
+  100% { box-shadow: 0 0 0 0 rgba(37,211,102,0), 0 4px 14px rgba(0,0,0,0.35); }
+}
+
+/* Share Floating Button */
+.share-float {
+  position: fixed;
+  bottom: 160px;
+  right: 18px;
+  width: 54px;
+  height: 54px;
+  background: linear-gradient(135deg, #FFB800, #FF5C00);
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+  cursor: pointer;
+  z-index: 999;
+  transition: transform 0.2s ease;
+}
+
+.share-float:hover {
+  transform: scale(1.1) rotate(10deg);
+}
+
+/* Overlay + Bottom Sheet (kama TikTok/YouTube) */
+.share-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 1000;
+}
+.share-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.share-sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #161616;
+  border-radius: 20px 20px 0 0;
+  padding: 10px 20px 24px;
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(.32,.72,0,1);
+  z-index: 1001;
+  max-width: 480px;
+  margin: 0 auto;
+}
+.share-sheet.active {
+  transform: translateY(0);
+}
+
+.share-handle {
+  width: 40px;
+  height: 4px;
+  background: #444;
+  border-radius: 4px;
+  margin: 6px auto 14px;
+}
+
+.share-sheet h3 {
+  color: white;
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.share-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.share-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: #ddd;
+  font-size: 12px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.share-ico {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  background: #262626;
+}
+.share-ico.wa { background: #25D366; }
+.share-ico.tg { background: #229ED9; }
+.share-ico.fb { background: #1877F2; }
+.share-ico.tw { background: #000; }
+.share-ico.tt { background: #000; }
+.share-ico.cp { background: #FFB800; color:#0D0D0D; font-weight:700; }
+
+.share-cancel {
+  width: 100%;
+  padding: 13px;
+  background: #262626;
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}

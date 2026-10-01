@@ -1,0 +1,24 @@
+{
+  "name": "hesabu-chapchap-tz",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+ "scripts": {
+  "dev": "live-server --port=5500"
+},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abduhamidsuleiman059-cyber/hesabu-chapchap-tz.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/abduhamidsuleiman059-cyber/hesabu-chapchap-tz/issues"
+  },
+  "homepage": "https://github.com/abduhamidsuleiman059-cyber/hesabu-chapchap-tz#readme",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}
