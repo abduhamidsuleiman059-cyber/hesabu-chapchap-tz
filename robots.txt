@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://hesabu-chapchap-tz.vercel.app/sitemap.xml
